@@ -1,3 +1,4 @@
+import { API_URL } from "../utils/api";
 import { useState } from "react";
 import type { PredictionResult } from "../PredictionTypes";
 
@@ -27,7 +28,7 @@ function UploadForm({ onResults }: Props) {
     formData.append("file", file);
 
     try {
-      const res = await fetch("http://localhost:8000/predict_csv", {
+      const res = await fetch(`${API_URL}/predict_csv`, {
         method: "POST",
         body: formData,
       });

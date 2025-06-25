@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { API_URL } from '../utils/api';
 
 type Features = { [key: string]: string };
+
 interface PredictionResponse {
   is_fraud: boolean;
   fraud_probability: number;
@@ -56,7 +58,7 @@ function PredictionForm() {
     );
 
     try {
-      const res = await fetch('http://localhost:8000/predict', {
+      const res = await fetch(`${API_URL}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ features: numericFeatures }),
@@ -64,14 +66,16 @@ function PredictionForm() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || 'Prediction failed');
+        throw new Error(errorData.detail || 'Prediction failed');
       }
 
       const data: PredictionResponse = await res.json();
-      setResult(`Prediction: ${data.is_fraud ? 'Fraud' : 'Legit'} | Probability: ${data.fraud_probability.toFixed(4)}`);
+      setResult(
+        `Prediction: ${data.is_fraud ? 'Fraud' : 'Legit'} | Probability: ${data.fraud_probability.toFixed(4)}`
+      );
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Something went wrong';
-      setResult(message);
+      setResult(`Error: ${message}`);
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +88,9 @@ function PredictionForm() {
       onSubmit={handleSubmit}
       className="bg-gray-800 border border-gray-700 p-6 rounded-2xl max-w-3xl mx-auto mt-8 shadow-md"
     >
-      <h2 className="text-white text-xl font-semibold mb-4 text-center">Manual Transaction Prediction</h2>
+      <h2 className="text-white text-xl font-semibold mb-4 text-center">
+        Manual Transaction Prediction
+      </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {Object.keys(features).map((key) => (
           <label key={key} className="flex flex-col">
