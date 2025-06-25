@@ -10,7 +10,7 @@ import io
 import uvicorn
 
 # Load model components
-model = joblib.load("model/logistic_model.pkl")
+model = joblib.load("backend/model/logistic_model.pkl")
 scaler = joblib.load("model/scaler.pkl")
 explainer = joblib.load("model/shap_explainer.pkl")
 
