@@ -8,11 +8,16 @@ import joblib
 import shap
 import io
 import uvicorn
+import os
+
+# Dynamically resolve path to model directory
+base_dir = os.path.dirname(__file__)
+model_dir = os.path.join(base_dir, "model")
 
 # Load model components
-model = joblib.load("model/logistic_model.pkl")
-scaler = joblib.load("model/scaler.pkl")
-explainer = joblib.load("model/shap_explainer.pkl")
+model = joblib.load(os.path.join(model_dir, "logistic_model.pkl"))
+scaler = joblib.load(os.path.join(model_dir, "scaler.pkl"))
+explainer = joblib.load(os.path.join(model_dir, "shap_explainer.pkl"))
 
 app = FastAPI()
 
@@ -25,7 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ---- Single Transaction Prediction Endpoint ----
+# Single Transaction Prediction Endpoint
 class Transaction(BaseModel):
     features: list[float]
 
@@ -50,7 +55,7 @@ def predict(transaction: Transaction):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-# ---- Batch CSV Prediction Endpoint ----
+# Batch CSV Prediction Endpoint
 @app.post("/predict_csv")
 async def predict_csv(file: UploadFile = File(...)):
     try:
@@ -71,7 +76,8 @@ async def predict_csv(file: UploadFile = File(...)):
         raise HTTPException(status_code=400, detail=str(e))
 
 
-# ---- Local Dev Entry Point ----
+# Local Dev Entry Point
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
 
