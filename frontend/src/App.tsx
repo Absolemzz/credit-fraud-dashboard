@@ -90,13 +90,13 @@ function App() {
                 </div>
                 <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
                   <p className="text-gray-400">Fraudulent</p>
-                  <p className="text-2xl font-bold text-red-500">
+                  <p className="text-2xl font-bold text-red-500 pt-4">
                     {fraudCount}
                   </p>
                 </div>
                 <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
                   <p className="text-gray-400">Fraud Rate</p>
-                  <p className="text-2xl font-bold">{fraudRate}%</p>
+                  <p className="text-2xl font-bold pt-4">{fraudRate}%</p>
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ function App() {
                 <div className="flex justify-end">
                   <button
                     onClick={handleDownloadCSV}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded transition duration-200"
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded transition duration-200"
                   >
                     Download CSV
                   </button>
